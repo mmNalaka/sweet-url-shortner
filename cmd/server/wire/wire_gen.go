@@ -29,11 +29,21 @@ func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), err
 	repositoryRepository := repository.NewRepository(logger, db)
 	transaction := repository.NewTransaction(repositoryRepository)
 	sidSid := sid.NewSid()
+
 	serviceService := service.NewService(transaction, logger, sidSid, jwtJWT)
+
 	userRepository := repository.NewUserRepository(repositoryRepository)
+	linkRepository := repository.NewLinkRepository(repositoryRepository)
+
 	userService := service.NewUserService(serviceService, userRepository)
+	linkService := service.NewLinkService(serviceService, linkRepository)
+
+
 	userHandler := handler.NewUserHandler(handlerHandler, userService)
-	httpServer := server.NewHTTPServer(logger, viperViper, jwtJWT, userHandler)
+	linkHandler := handler.NewLinkHandler(handlerHandler, linkService)
+
+	httpServer := server.NewHTTPServer(logger, viperViper, jwtJWT, userHandler, linkHandler)
+	
 	job := server.NewJob(logger)
 	appApp := newApp(httpServer, job)
 	return appApp, func() {

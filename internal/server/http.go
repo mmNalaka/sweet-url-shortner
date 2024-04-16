@@ -1,7 +1,6 @@
 package server
 
 import (
-	"github.com/gin-gonic/gin"
 	apiV1 "sweet/api/v1"
 	"sweet/docs"
 	"sweet/internal/handler"
@@ -9,6 +8,8 @@ import (
 	"sweet/pkg/jwt"
 	"sweet/pkg/log"
 	"sweet/pkg/server/http"
+
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -19,6 +20,7 @@ func NewHTTPServer(
 	conf *viper.Viper,
 	jwt *jwt.JWT,
 	userHandler *handler.UserHandler,
+	linkHandler *handler.LinkHandler,
 ) *http.Server {
 	gin.SetMode(gin.DebugMode)
 	s := http.NewServer(
@@ -56,6 +58,8 @@ func NewHTTPServer(
 		{
 			noAuthRouter.POST("/register", userHandler.Register)
 			noAuthRouter.POST("/login", userHandler.Login)
+
+			noAuthRouter.POST("/link", linkHandler.GetLink)
 		}
 		// Non-strict permission routing group
 		noStrictAuthRouter := v1.Group("/").Use(middleware.NoStrictAuth(jwt, logger))
