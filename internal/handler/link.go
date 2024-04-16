@@ -10,6 +10,7 @@ type LinkHandler struct {
 	linkService service.LinkService
 }
 
+
 func NewLinkHandler(handler *Handler, linkService service.LinkService) *LinkHandler {
 	return &LinkHandler{
 		Handler:      handler,

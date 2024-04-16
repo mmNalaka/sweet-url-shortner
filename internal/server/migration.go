@@ -30,6 +30,14 @@ func (m *Migrate) Start(ctx context.Context) error {
 		m.log.Error("project migrate error", zap.Error(err))
 		return err
 	}
+	if err := m.db.AutoMigrate(&model.Link{}); err != nil {
+		m.log.Error("link migrate error", zap.Error(err))
+		return err
+	}
+	if err := m.db.AutoMigrate(&model.Tag{}); err != nil {
+		m.log.Error("tag migrate error", zap.Error(err))
+		return err
+	}
 	m.log.Info("AutoMigrate success")
 	os.Exit(0)
 	return nil

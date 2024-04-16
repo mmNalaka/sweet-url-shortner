@@ -12,6 +12,8 @@ type Project struct {
 	Slug       string `gorm:"unique;not null"`
 	Logo       string
 	InviteCode string `gorm:"unique"`
+	OwnerId    uint
+	Owner      User
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 	DeletedAt  gorm.DeletedAt `gorm:"index"`
