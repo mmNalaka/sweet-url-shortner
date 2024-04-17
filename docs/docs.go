@@ -10,21 +10,48 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
-        },
+        "contact": {},
         "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "name": "Apache 2.0"
         },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/link": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Link module"
+                ],
+                "summary": "Create a link",
+                "parameters": [
+                    {
+                        "description": "params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.CreateLinkRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.CreateLinkResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "consumes": [
@@ -121,6 +148,40 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "v1.CreateLinkRequest": {
+            "type": "object",
+            "required": [
+                "url"
+            ],
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "example": "https://www.google.com"
+                }
+            }
+        },
+        "v1.CreateLinkResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/v1.CreateLinkResponseData"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.CreateLinkResponseData": {
+            "type": "object",
+            "properties": {
+                "shortLink": {
+                    "type": "string"
+                }
+            }
+        },
         "v1.GetProfileResponse": {
             "type": "object",
             "properties": {
@@ -231,8 +292,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8000",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Nunu Example API",
-	Description:      "This is a sample server celler server.",
+	Title:            "Sweet API",
+	Description:      "Simple URL shortener service API written in Go with Gin",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

@@ -59,7 +59,7 @@ func NewHTTPServer(
 			noAuthRouter.POST("/register", userHandler.Register)
 			noAuthRouter.POST("/login", userHandler.Login)
 
-			noAuthRouter.POST("/link", linkHandler.GetLink)
+			noAuthRouter.POST("/links", linkHandler.CreateLink)
 		}
 		// Non-strict permission routing group
 		noStrictAuthRouter := v1.Group("/").Use(middleware.NoStrictAuth(jwt, logger))

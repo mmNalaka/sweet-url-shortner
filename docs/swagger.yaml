@@ -1,4 +1,26 @@
 definitions:
+  v1.CreateLinkRequest:
+    properties:
+      url:
+        example: https://www.google.com
+        type: string
+    required:
+    - url
+    type: object
+  v1.CreateLinkResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/v1.CreateLinkResponseData'
+      message:
+        type: string
+    type: object
+  v1.CreateLinkResponseData:
+    properties:
+      shortLink:
+        type: string
+    type: object
   v1.GetProfileResponse:
     properties:
       code:
@@ -64,18 +86,34 @@ definitions:
     type: object
 host: localhost:8000
 info:
-  contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
-  description: This is a sample server celler server.
+  contact: {}
+  description: Simple URL shortener service API written in Go with Gin
   license:
     name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://swagger.io/terms/
-  title: Nunu Example API
+  title: Sweet API
   version: 1.0.0
 paths:
+  /link:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CreateLinkRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.CreateLinkResponse'
+      summary: Create a link
+      tags:
+      - Link module
   /login:
     post:
       consumes:
