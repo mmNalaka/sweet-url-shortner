@@ -8,8 +8,7 @@ import (
 
 type Link struct {
 	Id            uint   `gorm:"primarykey"`
-	Domain        string `gorm:"unique;not null"`
-	Key           string `gorm:"not null"`
+	Key           string `gorm:"unique;not null"`
 	Url           string `gorm:"not null"`
 	Proxy         bool   `gorm:"default:false"`
 	Title         string

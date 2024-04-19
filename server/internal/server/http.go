@@ -1,7 +1,6 @@
 package server
 
 import (
-	apiV1 "sweet/api/v1"
 	"sweet/docs"
 	"sweet/internal/handler"
 	"sweet/internal/middleware"
@@ -44,12 +43,7 @@ func NewHTTPServer(
 		middleware.RequestLogMiddleware(logger),
 		//middleware.SignMiddleware(log),
 	)
-	s.GET("/", func(ctx *gin.Context) {
-		logger.WithContext(ctx).Info("hello")
-		apiV1.HandleSuccess(ctx, map[string]interface{}{
-			":)": "Thank you for using nunu!",
-		})
-	})
+	s.GET("/:key", linkHandler.FindLink)
 
 	v1 := s.Group("/v1")
 	{

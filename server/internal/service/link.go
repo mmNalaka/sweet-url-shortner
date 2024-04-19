@@ -8,7 +8,7 @@ import (
 )
 
 type LinkService interface {
-	GetLink(ctx context.Context, id int64) (*model.Link, error)
+	GetLink(ctx context.Context, id string) (*model.Link, error)
 	CreateLink(ctx context.Context, req *v1.CreateLinkRequest) (*v1.CreateLinkResponseData, error)
 }
 
@@ -24,8 +24,9 @@ type linkService struct {
 	linkRepository repository.LinkRepository
 }
 
-func (s *linkService) GetLink(ctx context.Context, id int64) (*model.Link, error) {
-	return s.linkRepository.FirstById(ctx, id)
+// GetLink get link by id used when edit link or get link detail
+func (s *linkService) GetLink(ctx context.Context, id string) (*model.Link, error) {
+	return s.linkRepository.FindFirstBYKey(ctx, id)
 }
 
 func (s *linkService) CreateLink(ctx context.Context, req *v1.CreateLinkRequest) (*v1.CreateLinkResponseData, error) {

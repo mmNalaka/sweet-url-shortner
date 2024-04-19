@@ -21,6 +21,31 @@ func NewLinkHandler(handler *Handler, linkService service.LinkService) *LinkHand
 	}
 }
 
+// Find a link and redirect to the original link
+// If the link is not found, return 404
+func (h *LinkHandler) FindLink(ctx *gin.Context) {
+	key := ctx.Param("key")
+	if key == "" {
+		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
+		return
+	}
+
+	link, err := h.linkService.GetLink(ctx, key)
+	if err != nil {
+		h.logger.WithContext(ctx).Error("linkService.GetLink error", zap.Error(err))
+		v1.HandleError(ctx, http.StatusInternalServerError, err, nil)
+		return
+	}
+
+	if link == nil {
+		v1.HandleError(ctx, http.StatusNotFound, v1.ErrNotFound, nil)
+		return
+	}
+
+	ctx.Redirect(http.StatusMovedPermanently, link.Url)
+
+}
+
 func (h *LinkHandler) GetLink(ctx *gin.Context) {
 
 }
